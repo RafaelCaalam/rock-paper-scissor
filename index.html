@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors: Player vs Bot</title>
+    <style>
+        .choices-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .choice {
+            text-align: center;
+        }
+        .choice img {
+            display: block;
+            margin: 0 auto;
+        }
+        .result {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .start-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .start-container button {
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Rock Paper Scissors: Player vs Bot</h1>
+    
+    <div class="choices-container">
+        <div class="choice">
+            <h2>Player's Choice:</h2>
+            <img id="playerChoice" src="rock.jpg" alt="Player's choice" width="100" height="100">
+            <p id="playerResult" class="result">Player chose:</p>
+        </div>
+        <div class="choice">
+            <h2>Bot's Choice:</h2>
+            <img id="botChoice" src="rock.jpg" alt="Bot's choice" width="100" height="100">
+            <p id="botResult" class="result">Bot chose:</p>
+        </div>
+    </div>
+
+    <div id="resultText" class="result" style="display: none;"></div>
+
+    <div class="start-container">
+        <button id="start" onclick="generateChoices()">Start</button>
+    </div>
+
+    <script>
+        const choices = [
+            { name: "Rock", image: "rock.jpg" },
+            { name: "Paper", image: "paper.jpg" },
+            { name: "Scissors", image: "scissors.jpg" }
+        ];
+
+        function generateChoices() {
+            const playerImg = document.getElementById('playerChoice');
+            const botImg = document.getElementById('botChoice');
+            const playerResult = document.getElementById('playerResult');
+            const botResult = document.getElementById('botResult');
+            const resultText = document.getElementById('resultText');
+
+            // Initialize both player and bot to "Rock"
+            playerImg.src = choices[0].image;
+            botImg.src = choices[0].image;
+            playerResult.textContent = "Player chose:";
+            botResult.textContent = "Bot chose:";
+            resultText.style.display = "none";
+
+            // Generate random choices after clicking Start button
+            const playerRandomIndex = Math.floor(Math.random() * choices.length);
+            const botRandomIndex = Math.floor(Math.random() * choices.length);
+
+            // Update player's choice (after initialization)
+            setTimeout(() => {
+                playerImg.src = choices[playerRandomIndex].image;
+                playerResult.textContent = `Player chose: ${choices[playerRandomIndex].name}`;
+            }, 500); // Delay to simulate decision making
+
+            // Delay bot's choice for 1 second to simulate bot's decision-making process
+            setTimeout(() => {
+                botImg.src = choices[botRandomIndex].image;
+                botResult.textContent = `Bot chose: ${choices[botRandomIndex].name}`;
+
+                // Determine the winner
+                const playerChoice = choices[playerRandomIndex].name;
+                const botChoice = choices[botRandomIndex].name;
+                const winner = determineWinner(playerChoice, botChoice);
+
+                // Display result after both choices are made
+                setTimeout(() => {
+                    resultText.textContent = winner;
+                    resultText.style.display = "block";
+                }, 1000);
+            }, 1000);
+        }
+
+        function determineWinner(playerChoice, botChoice) {
+            if (playerChoice === botChoice) {
+                return "It's a tie!";
+            } else if (
+                (playerChoice === "Rock" && botChoice === "Scissors") ||
+                (playerChoice === "Paper" && botChoice === "Rock") ||
+                (playerChoice === "Scissors" && botChoice === "Paper")
+            ) {
+                return "Player wins!";
+            } else {
+                return "Bot wins!";
+            }
+        }
+    </script>
+</body>
+</html>
